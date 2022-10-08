@@ -16,12 +16,10 @@ with urlopen(url) as source:
 
 data = json.loads(out)
 
-with open("restaurant_data.json", "w") as file:
-    merged = []
-    for i in range(len(data)):
-        # combine all results shown
-        merged.extend(data[i]["restaurants"])
-    json.dump(merged, file)
+restaurant_data = []
+for i in range(len(data)):
+    # combine all results shown
+    restaurant_data.extend(data[i]["restaurants"])
 
 
 ########## Connect to Mongodb and create database ##########
@@ -33,7 +31,6 @@ db = mongodb.Restaurants
 
 ########## Load data files & save as them collections of the database ##########
 
-restaurant_data = json.load(open("restaurant_data.json"))
 # create and populate collection
 res = db.restaurants
 res.insert_many(restaurant_data)
